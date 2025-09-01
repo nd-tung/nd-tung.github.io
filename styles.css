@@ -7,7 +7,17 @@
 
 html {
     scroll-behavior: smooth;
+    /* Offset built-in anchor scrolling for fixed header */
+    scroll-padding-top: calc(var(--header-height, 64px) + 8px);
     -webkit-text-size-adjust: 100%; /* Prevent text scaling on mobile */
+}
+
+/* Dynamic layout variables */
+:root {
+    /* Will be set from JS based on actual navbar height */
+    --header-height: 64px;
+    --hero-pad-top-extra: 16px;  /* extra breathing space above hero content */
+    --hero-pad-bottom: 40px;     /* default bottom padding for hero */
 }
 
 body {
@@ -16,6 +26,9 @@ body {
     color: #333;
     background-color: #ffffff;
     overflow-x: hidden; /* Prevent horizontal scrolling */
+    margin: 0;
+    padding: 0;
+    position: relative;
 }
 
 /* Container */
@@ -31,10 +44,12 @@ body {
 .navbar {
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    z-index: 1000;
+    z-index: 1001;
     transition: all 0.3s ease;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding-top: env(safe-area-inset-top, 0);
@@ -107,17 +122,22 @@ body {
 
 /* Hero Section */
 .hero {
-    padding-top: 120px;
-    padding-bottom: 30px;
+    /* Ensure content starts below fixed navbar on all devices */
+    padding-top: calc(var(--header-height, 64px) + var(--hero-pad-top-extra, 16px));
+    padding-bottom: var(--hero-pad-bottom, 40px);
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    height: 100vh;
+    /* Fit visible viewport; fallback to vh where svh isn't supported */
+    min-height: calc(100vh - var(--header-height, 64px));
+    min-height: calc(100svh - var(--header-height, 64px));
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: center;
     position: relative;
     z-index: 1;
     overflow: hidden;
     box-sizing: border-box;
+    margin-top: 0;
 }
 
 .hero-content {
@@ -125,6 +145,8 @@ body {
     position: relative;
     z-index: 10;
     width: 100%;
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .hero-title {
@@ -945,9 +967,11 @@ section {
     }
 
     .hero {
-        padding-top: 100px;
-        padding-bottom: 20px;
-        height: 100vh;
+        /* Use dynamic header height and keep spacing consistent */
+        padding-top: calc(var(--header-height, 64px) + var(--hero-pad-top-extra, 16px));
+        padding-bottom: var(--hero-pad-bottom, 40px);
+        min-height: calc(100vh - var(--header-height, 64px));
+        min-height: calc(100svh - var(--header-height, 64px));
         box-sizing: border-box;
     }
 
@@ -1148,20 +1172,23 @@ section {
     }
 
     .hero {
-        padding-top: 90px;
-        padding-bottom: 15px;
-        height: 100vh;
+        padding-top: calc(var(--header-height, 64px) + var(--hero-pad-top-extra, 16px));
+        padding-bottom: var(--hero-pad-bottom, 40px);
+        min-height: calc(100vh - var(--header-height, 64px));
+        min-height: calc(100svh - var(--header-height, 64px));
         position: relative;
         overflow: visible;
         box-sizing: border-box;
+        z-index: 1;
+        margin-top: 0;
     }
 
     .hero-content {
         position: relative;
         z-index: 10;
         width: 100%;
-        padding: 20px 0 0 0;
-        margin-top: 20px;
+        padding: 0;
+        margin-top: 0;
     }
 
     .hero-title {
@@ -1422,8 +1449,6 @@ section {
         display: block;
     }
 
-    }
-
     /* Additional mobile optimizations */
     .hero-content {
         text-align: center;
@@ -1544,17 +1569,23 @@ section {
     .project-card:active::before {
         left: 100%;
     }
-}
+
 
 /* Very small mobile devices - extra navbar clearance */
 @media (max-width: 375px) {
     .hero {
-        padding-top: 100px;
+    padding-top: calc(var(--header-height, 64px) + var(--hero-pad-top-extra, 16px));
+    padding-bottom: var(--hero-pad-bottom, 40px);
+        z-index: 1;
+        position: relative;
     }
 
     .navbar {
         position: fixed;
-        z-index: 1001;
+        z-index: 1002;
+        top: 0;
+        left: 0;
+        right: 0;
     }
 }
 
@@ -1958,6 +1989,8 @@ html {
 section {
     position: relative;
     overflow: hidden;
+    /* So anchored jumps account for fixed navbar */
+    scroll-margin-top: calc(var(--header-height, 64px) + 8px);
 }
 
 /* Accessibility - Respect user preferences */

@@ -1,5 +1,13 @@
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Measure navbar height and expose to CSS/JS
+    const navbar = document.querySelector('.navbar');
+    function setHeaderHeightVar() {
+        const h = navbar ? navbar.getBoundingClientRect().height : 64;
+        document.documentElement.style.setProperty('--header-height', `${Math.round(h)}px`);
+    }
+    setHeaderHeightVar();
+    window.addEventListener('resize', setHeaderHeightVar);
     
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
@@ -44,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Smooth scrolling for navigation links
+    // Smooth scrolling for navigation links (using measured header height)
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -53,7 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
-                const offsetTop = targetSection.offsetTop - 80; // Account for fixed navbar
+                const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 64;
+                const offsetTop = targetSection.offsetTop - headerH - 8; // small breathing room
                 
                 window.scrollTo({
                     top: offsetTop,
@@ -62,6 +71,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // If page loads with a hash, adjust the scroll position to account for fixed header
+    if (window.location.hash) {
+        const hashTarget = document.querySelector(window.location.hash);
+        if (hashTarget) {
+            const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 64;
+            window.scrollTo({ top: hashTarget.offsetTop - headerH - 8 });
+        }
+    }
     
     // Scroll event listeners
     window.addEventListener('scroll', function() {
