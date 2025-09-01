@@ -16,7 +16,7 @@ html {
 :root {
     /* Will be set from JS based on actual navbar height */
     --header-height: 64px;
-    --hero-pad-top-extra: 16px;  /* extra breathing space above hero content */
+    --hero-pad-top-extra: 8px;   /* extra breathing space above hero content */
     --hero-pad-bottom: 40px;     /* default bottom padding for hero */
 }
 
@@ -131,7 +131,7 @@ body {
     min-height: calc(100vh - var(--header-height, 64px));
     min-height: calc(100svh - var(--header-height, 64px));
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     position: relative;
     z-index: 1;
@@ -973,6 +973,7 @@ section {
         min-height: calc(100vh - var(--header-height, 64px));
         min-height: calc(100svh - var(--header-height, 64px));
         box-sizing: border-box;
+        align-items: center;
     }
 
     .hero-title {
@@ -1181,6 +1182,7 @@ section {
         box-sizing: border-box;
         z-index: 1;
         margin-top: 0;
+        align-items: center;
     }
 
     .hero-content {
@@ -1587,7 +1589,8 @@ section {
     padding-top: calc(var(--header-height, 64px) + var(--hero-pad-top-extra, 16px));
     padding-bottom: var(--hero-pad-bottom, 40px);
         z-index: 1;
-        position: relative;
+    position: relative;
+    align-items: center;
     }
 
     .navbar {
