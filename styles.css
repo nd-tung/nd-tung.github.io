@@ -748,10 +748,35 @@ section {
     font-weight: 600;
 }
 
-.project-links {
+/* Dual link indicator styling */
+.project-link-indicator.dual-links {
     display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.project-link-indicator.dual-links .link-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.3rem 0;
+}
+
+.project-link-indicator.dual-links .link-item:hover {
+    color: #2563eb;
+    transform: translateX(5px);
+}
+
+.project-link-indicator.dual-links .link-item i {
+    font-size: 1rem;
+}
+
+.project-card:hover .project-link-indicator.dual-links {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 @media (max-width: 768px) {
